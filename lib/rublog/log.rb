@@ -1,3 +1,5 @@
+require_relative("./record")
+
 # typed: strict
 module Rublog
   class Log < T::Struct
@@ -5,17 +7,20 @@ module Rublog
     end
 
     extend T::Sig
-    prop :semaphore, Mutex
-    prop :records, [Record]
-    sig { params(      record: Record).returns(Integer) }
+    prop :semaphore, Mutex,     default: Mutex.new
+    prop :records, T::Array[Record],     default: []
+    sig { params(      value: String).returns(Integer) }
 
-    def append(record)
+    def append(value)
+      offset = 0
+
       semaphore.synchronize do
-        record.offset = records.size
+        record = Record.new(        value: value,         offset: records.size)
         records << record
+        offset = record.offset
       end
 
-      record.offset
+      offset
     end
 
     sig { params(      offset: Integer).returns(Record) }

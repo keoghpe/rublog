@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require "sinatra"
+require "sorbet-runtime"
+require_relative("../lib/rublog/log")
+
+log = Rublog::Log.new
+
+get("/") do
+  offset = JSON.parse(params.keys.first)["offset"]
+  log.read(offset).serialize.to_json
+rescue Rublog::Log::OffsetNotFoundError
+  status(404)
+  ""
+rescue TypeError
+  status(401)
+  ""
+end
+
+post("/") do
+  offset = log.append(params.keys.first)
+  {offset: offset}.to_json
+end
