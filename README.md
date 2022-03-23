@@ -1,8 +1,6 @@
 # Rublog
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rublog`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A Ruby clone of [Proglog](https://github.com/travisjeffery/proglog).
 
 ## Installation
 
